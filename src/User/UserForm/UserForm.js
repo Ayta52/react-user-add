@@ -8,14 +8,23 @@ const UserForm = (props) => {
 
   const [inputName, setInputName] = useState('');
   const [inputAge, setInputAge] = useState('');
+  const [error, setError] = useState()
 
 
   const createUserHandler = (event) => {
     event.preventDefault();
     if (inputName.trim().length === 0 || inputAge.trim().length === 0) {
+      setError({
+        title: 'Некоректный ввод',
+        message: 'Эти поля не могут быть пустыми'
+      })
       return;
     }
     if (+inputAge < 1) {
+      setError({
+        title: 'Некоректный возраст',
+        message: 'Возраст должен быть больше 0'
+      })
       return;
     }
     props.onCreateUser(inputName, inputAge)
@@ -31,9 +40,13 @@ const UserForm = (props) => {
     setInputAge(event.target.value)
   }
 
+  const errorHandler = () => {
+    setError(false)
+  }
+
   return (
     <div>
-      <ErrorModal tittle="Прозошла ошибка" message="Что-то пошло не так..." />
+      {error && <ErrorModal title={error.title} message={error.message} onCloseHandler={errorHandler} />}
       <Card className={styles.input}>
         <form onSubmit={createUserHandler}>
           <label htmlFor="name">ФИО</label>

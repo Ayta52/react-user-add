@@ -6,16 +6,16 @@ import styles from './ErrorModel.module.css'
 const ErrorModal = (props) => {
   return (
     <div>
-      <div className={styles.backdrop}></div>
+      <div className={styles.backdrop} onClick={props.onCloseHandler}></div>
       <Card className={styles.modal}>
         <header className={styles.header}>
-          <h2>{props.tittle}</h2>
+          <h2>{props.title}</h2>
         </header>
         <div className={styles.content}>
           <p>{props.message}</p>
         </div>
         <footer className={styles.actions}>
-          <Button> Закрыть </Button>
+          <Button onClick={props.onCloseHandler} > Закрыть </Button>
         </footer>
       </Card>
     </div>
