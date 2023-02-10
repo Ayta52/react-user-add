@@ -1,62 +1,62 @@
-import { useState } from 'react'
+import React, { useState, useRef, Fragment } from 'react'
 import Card from '../UI/Card'
 import Button from '../UI/Button'
-import styles from './UserForm.module.css'
 import ErrorModal from '../UI/ErrorModal'
+
+import styles from './UserForm.module.css'
 
 const UserForm = (props) => {
 
-  const [inputName, setInputName] = useState('');
-  const [inputAge, setInputAge] = useState('');
-  const [error, setError] = useState()
+  const nameInputRef = useRef();
+  const ageInputRef = useRef();
+
+  const [error, setError] = useState();
 
 
   const createUserHandler = (event) => {
     event.preventDefault();
-    if (inputName.trim().length === 0 || inputAge.trim().length === 0) {
+
+    const inputUserName = nameInputRef.current.value;
+    const inputUserAge = ageInputRef.current.value;
+
+    if (inputUserName.trim().length === 0 || inputUserAge.trim().length === 0) {
       setError({
         title: 'Некоректный ввод',
         message: 'Эти поля не могут быть пустыми'
-      })
+      });
       return;
-    }
-    if (+inputAge < 1) {
+    };
+    if (+inputUserAge < 1) {
       setError({
         title: 'Некоректный возраст',
         message: 'Возраст должен быть больше 0'
-      })
+      });
       return;
-    }
-    props.onCreateUser(inputName, inputAge)
-    setInputName('')
-    setInputAge('')
-  }
+    };
+    props.onCreateUser(inputUserName, inputUserAge)
+    nameInputRef.current.value = '';
+    ageInputRef.current.value = '';
+  };
 
-  const nameChangeHanlder = (event) => {
-    setInputName(event.target.value)
-  }
 
-  const ageChangeHanlder = (event) => {
-    setInputAge(event.target.value)
-  }
 
   const errorHandler = () => {
-    setError(false)
-  }
+    setError(false);
+  };
 
   return (
-    <div>
+    <Fragment>
       {error && <ErrorModal title={error.title} message={error.message} onCloseHandler={errorHandler} />}
       <Card className={styles.input}>
         <form onSubmit={createUserHandler}>
           <label htmlFor="name">ФИО</label>
-          <input id='name' type="text" onChange={nameChangeHanlder} value={inputName} />
+          <input id='name' type="text" ref={nameInputRef} />
           <label htmlFor="age">Возраст</label>
-          <input id='age' type="number" onChange={ageChangeHanlder} value={inputAge} />
+          <input id='age' type="number" ref={ageInputRef} />
           <Button type='submit'>Добавить Пользователя</Button>
         </form>
       </Card>
-    </div>
+    </Fragment>
   )
 }
 
