@@ -1,7 +1,7 @@
-import Card from "./Card"
-import Button from "./Button"
+import Card from './Card';
+import Button from './Button';
 
-import styles from './ErrorModel.module.css'
+import styles from './ErrorModel.module.css';
 
 const ErrorModal = (props) => {
   return (
@@ -15,11 +15,11 @@ const ErrorModal = (props) => {
           <p>{props.message}</p>
         </div>
         <footer className={styles.actions}>
-          <Button onClick={props.onCloseHandler} > Закрыть </Button>
+          <Button onClick={props.onCloseHandler}> Закрыть </Button>
         </footer>
       </Card>
     </div>
-  )
-}
+  );
+};
 
-export default ErrorModal
+export default ErrorModal;
